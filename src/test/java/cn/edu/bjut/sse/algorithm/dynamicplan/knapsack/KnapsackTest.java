@@ -1,4 +1,7 @@
-package cn.edu.bjut.sse.algorithm.dynamicplan;
+package cn.edu.bjut.sse.algorithm.dynamicplan.knapsack;
+
+import cn.edu.bjut.sse.algorithm.dynamicplan.knapsack.Knapsack;
+import cn.edu.bjut.sse.algorithm.dynamicplan.knapsack.KnapsackProblem;
 
 public class KnapsackTest {
 	
@@ -13,7 +16,7 @@ public class KnapsackTest {
 		
 		// [When]
 		KnapsackProblem kp = new KnapsackProblem(bags, totalWeight);
-		kp.solve();
+		kp.solveComplete();
 		
 		// [Then]
 		System.out.println(" -------- 该背包问题实例的解: --------- ");

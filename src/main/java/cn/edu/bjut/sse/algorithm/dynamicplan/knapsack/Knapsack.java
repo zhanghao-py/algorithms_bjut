@@ -1,4 +1,4 @@
-package cn.edu.bjut.sse.algorithm.dynamicplan;
+package cn.edu.bjut.sse.algorithm.dynamicplan.knapsack;
 
 public class Knapsack {
 
