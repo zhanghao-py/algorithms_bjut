@@ -27,7 +27,7 @@ public class KnapsackProblem {
 		this.totalWeight = totalWeight;
 		this.n = bags.length;
 		if (bestValues == null) {
-			bestValues = new int[n][totalWeight + 1];
+			bestValues = new int[n+1][totalWeight+1];
 		}
 	}
 
@@ -43,25 +43,84 @@ public class KnapsackProblem {
 		}
 		System.out.println("给定总承重: " + totalWeight);
 
+		// 求解物品组成
+		if (bestSolution == null) {
+			bestSolution = new LinkedList<Knapsack>();
+		}
+		
 		// 求解最优值
-		for (int i = 0; i < n; i++) {
+		for (int i = 0; i <= n; i++) {
 			
 			for (int j = 0; j <= totalWeight; j++) {
 
-				// 第 i个物品的重量 iweight 和价值 ivalue
-				int iweight = bags[i].getWeight();
-				int ivalue = bags[i].getValue();
-				
-				if (i == 0) {
+				if (i == 0 || j == 0) {
 					bestValues[i][j] = 0;
-				} else if (j < iweight) { 
+				} else if (j < bags[i-1].getWeight()) { 
 					// 如果第 i个物品重量大于总承重，则最优解存在于前 i-1 个背包中，注意：第 i个物品是 bags[i-1]
 					bestValues[i][j] = bestValues[i - 1][j];
 				} else {
 					// 如果第 i个物品不大于总承重，则最优解要么是包含第 i个物品的最优解，
 					// 要么是不包含第 i个物品的最优解， 取两者最大值
+					// 第 i个物品的重量 iweight 和价值 ivalue
+					Knapsack b = bags[i-1];
+					int iweight = b.getWeight();
+					int ivalue = b.getValue();
+					
 					bestValues[i][j] = Math.max(bestValues[i - 1][j], bestValues[i][j - iweight] + ivalue);
+					bestSolution.add(b);
 				}
+			}
+		}
+
+		// 求解物品组成
+//		if (bestSolution == null) {
+//			bestSolution = new LinkedList<Knapsack>();
+//		}
+//		
+//		int tempWeight = totalWeight;
+//		for (int i = n; i >= 1; i--) {
+//			if (bestValues[i][tempWeight] > bestValues[i - 1][tempWeight]) {
+//				bestSolution.add(bags[i-1]); // bags[i-1] 表示第i个物品
+//				tempWeight -= bags[i-1].getWeight();
+//			}
+//			
+//			if (tempWeight == 0) {
+//				break;
+//			}
+//		}
+		
+		bestValue = bestValues[n][totalWeight];
+	}
+	
+	
+	public void solveComplete2() {
+
+		System.out.println("给定物品：");
+		for (Knapsack b : bags) {
+			System.out.println(b);
+		}
+		System.out.println("给定总承重: " + totalWeight);
+
+		// 求解最优值
+		for (int i = 0; i <= n; i++) {
+			
+			for (int j = 0; j <= totalWeight; j++) {
+
+				if (i == 0 || j == 0) {
+					bestValues[i][j] = 0;
+				} else {
+					
+					// 第 i个物品的重量 iweight 和价值 ivalue
+					int iweight = bags[i-1].getWeight();
+					int ivalue = bags[i-1].getValue();
+					
+					int nCount = j / iweight;  
+		            for (int k = 0; k <= nCount; k++) {  
+		            	bestValues[i][j] = Math.max(bestValues[i - 1][j], bestValues[i - 1][j - k * iweight] + k * ivalue);  
+		            }
+					
+				}
+					
 			}
 		}
 
@@ -71,16 +130,16 @@ public class KnapsackProblem {
 		}
 		
 		int tempWeight = totalWeight;
-		for (int i = n - 1; i >= 1; i--) {
+		for (int i = n; i >= 1; i--) {
 			if (bestValues[i][tempWeight] > bestValues[i - 1][tempWeight]) {
-				Knapsack b = bags[i];
+				Knapsack b = bags[i-1];
 				int n = (bestValues[i][tempWeight] - bestValues[i - 1][tempWeight]) / b.getValue();
 				
 				for (int k = 1; k <= n ; k++) {
-					bestSolution.add(bags[i]); // bags[i] 表示第i个物品
+					bestSolution.add(b); // bags[i] 表示第i个物品
 				}
 				
-				tempWeight -= bags[i].getWeight() * n;
+				tempWeight -= b.getWeight() * n;
 			}
 			
 			if (tempWeight == 0) {
@@ -88,8 +147,9 @@ public class KnapsackProblem {
 			}
 		}
 		
-		bestValue = bestValues[n-1][totalWeight];
+		bestValue = bestValues[n][totalWeight];
 	}
+	
 	
 	/**
 	 * 求解前 n个物品、给定总承重为 totalWeight下的0/1背包问题
@@ -104,22 +164,21 @@ public class KnapsackProblem {
 		System.out.println("给定总承重: " + totalWeight);
 
 		// 求解最优值
-		for (int i = 0; i < n; i++) {
+		for (int i = 0; i <= n; i++) {
 			
 			for (int j = 0; j <= totalWeight; j++) {
 				
-				int iweight = bags[i].getWeight();
-				int ivalue = bags[i].getValue();
-				
-				if (i == 0) {
+				if (i == 0 || j == 0) {
 					bestValues[i][j] = 0;
-				} else if (j < iweight) { 
+				} else if (j < bags[i-1].getWeight()) { 
 					// 如果第 i个物品重量大于总承重，则最优解存在于前 i-1 个背包中，注意：第 i个物品是 bags[i-1]
 					bestValues[i][j] = bestValues[i - 1][j];
 				} else {
 					// 如果第 i个物品不大于总承重，则最优解要么是包含第 i个物品的最优解，
 					// 要么是不包含第 i个物品的最优解， 取两者最大值
 					// 第 i个物品的重量 iweight 和价值 ivalue
+					int iweight = bags[i-1].getWeight();
+					int ivalue = bags[i-1].getValue();
 					bestValues[i][j] = Math.max(bestValues[i - 1][j], bestValues[i - 1][j - iweight] + ivalue);
 				}
 			}
@@ -131,10 +190,10 @@ public class KnapsackProblem {
 		}
 		
 		int tempWeight = totalWeight;
-		for (int i = n-1; i >= 1; i--) {
+		for (int i = n; i >= 1; i--) {
 			if (bestValues[i][tempWeight] > bestValues[i - 1][tempWeight]) {
-				bestSolution.add(bags[i]); // bags[i-1] 表示第i个物品
-				tempWeight -= bags[i].getWeight();
+				bestSolution.add(bags[i-1]); // bags[i-1] 表示第i个物品
+				tempWeight -= bags[i-1].getWeight();
 			}
 			
 			if (tempWeight == 0) {
@@ -142,7 +201,7 @@ public class KnapsackProblem {
 			}
 		}
 		
-		bestValue = bestValues[n-1][totalWeight];
+		bestValue = bestValues[n][totalWeight];
 	}
 	
 	/**

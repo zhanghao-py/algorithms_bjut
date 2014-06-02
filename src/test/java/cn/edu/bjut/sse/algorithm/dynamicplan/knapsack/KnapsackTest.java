@@ -8,11 +8,15 @@ public class KnapsackTest {
 	public static void main(String[] args) {
 
 		// [Given]
-		Knapsack[] bags = new Knapsack[] { new Knapsack(2, 13),
-				new Knapsack(1, 10), new Knapsack(3, 24), new Knapsack(2, 15),
-				new Knapsack(4, 28), new Knapsack(5, 33), new Knapsack(3, 20),
-				new Knapsack(1, 8) };
-		int totalWeight = 12;
+		Knapsack[] bags = new Knapsack[] { new Knapsack(3, 5),
+				new Knapsack(2, 10), new Knapsack(2, 20) };
+		int totalWeight = 5;
+		
+		
+//		Knapsack[] bags = new Knapsack[] { new Knapsack(2, 6),
+//				new Knapsack(2, 3), new Knapsack(6, 5), new Knapsack(5, 4),
+//				new Knapsack(4, 6) };
+//		int totalWeight = 10;
 		
 		// [When]
 		KnapsackProblem kp = new KnapsackProblem(bags, totalWeight);
