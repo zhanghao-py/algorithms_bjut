@@ -1,4 +1,4 @@
-package cn.edu.bjut.sse.algorithm.dynamicplan.stamp;
+package cn.edu.bjut.sse.algorithm.backtracking.stamp;
 
 /**
  * 连续邮资问题--回溯法
