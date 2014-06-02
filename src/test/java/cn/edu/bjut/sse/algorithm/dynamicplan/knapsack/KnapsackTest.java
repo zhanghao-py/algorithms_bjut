@@ -18,6 +18,7 @@ public class KnapsackTest {
 				new Knapsack(4, 6) };
 		int totalWeight = 10;
 		
+		
 		// [When]
 		KnapsackProblem kp = new KnapsackProblem(bags, totalWeight);
 		kp.solveComplete();

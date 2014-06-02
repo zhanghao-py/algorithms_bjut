@@ -43,6 +43,11 @@ public class KnapsackProblem {
 		}
 		System.out.println("给定总承重: " + totalWeight);
 
+		// 求解物品组成
+		if (bestSolution == null) {
+			bestSolution = new LinkedList<Knapsack>();
+		}
+		
 		// 求解最优值
 		for (int i = 0; i <= n; i++) {
 			
@@ -72,14 +77,13 @@ public class KnapsackProblem {
 		}
 		
 		int tempWeight = totalWeight;
-		for (int i = n; i >= 1; ) {
+		for (int i = n; i >= 1; i--) {
 			if (bestValues[i][tempWeight] > bestValues[i - 1][tempWeight]) {
 				bestSolution.add(bags[i-1]); // bags[i-1] 表示第i个物品
 				tempWeight -= bags[i-1].getWeight();
 			}
 			
-			//TODO: 打印方案还需修改（完全背包无法满足）
-			if (tempWeight == 0 || tempWeight < min(bags) ) {
+			if (tempWeight == 0) {
 				break;
 			}
 		}
@@ -88,19 +92,6 @@ public class KnapsackProblem {
 	}
 	
 	
-	private int min(Knapsack[] bags) {
-		int min = 0;
-		
-		for (Knapsack b : bags) {
-			if ( min < b.getWeight() ) {
-				min = b.getWeight();
-			}
-		}
-		
-		
-		return min;
-	}
-
 	public void solveComplete2() {
 
 		System.out.println("给定物品：");
@@ -138,24 +129,33 @@ public class KnapsackProblem {
 		}
 		
 		int tempWeight = totalWeight;
-		for (int i = n; i >= 1; i--) {
+		for (int i = n; i >= 1; ) {
 			if (bestValues[i][tempWeight] > bestValues[i - 1][tempWeight]) {
-				Knapsack b = bags[i-1];
-				int n = (bestValues[i][tempWeight] - bestValues[i - 1][tempWeight]) / b.getValue();
-				
-				for (int k = 1; k <= n ; k++) {
-					bestSolution.add(b); // bags[i] 表示第i个物品
-				}
-				
-				tempWeight -= b.getWeight() * n;
+				bestSolution.add(bags[i-1]); // bags[i-1] 表示第i个物品
+				tempWeight -= bags[i-1].getWeight();
 			}
 			
-			if (tempWeight == 0) {
+			//TODO: 打印方案还需修改（完全背包无法满足）
+			if (tempWeight == 0 || tempWeight < min(bags) ) {
 				break;
 			}
 		}
 		
 		bestValue = bestValues[n][totalWeight];
+	}
+	
+	
+	private int min(Knapsack[] bags) {
+		int min = 0;
+		
+		for (Knapsack b : bags) {
+			if ( min < b.getWeight() ) {
+				min = b.getWeight();
+			}
+		}
+		
+		
+		return min;
 	}
 	
 	
