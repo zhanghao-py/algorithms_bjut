@@ -30,14 +30,16 @@ public class StampCost {
 		this.leastStamp = new int[MAX_POSTAGE];
 		this.n = n;
 		this.m = m;
-		this.ranges = m;// 初始为m，因为m个1就是m
+		this.ranges = m;// 初始为m (m*1=m)
 		int i = 0;
 		for (i = 0; i <= this.ranges; i++) {
 			leastStamp[i] = i;
 		}
+		
 		while (i < MAX_POSTAGE) {
 			leastStamp[i++] = INF;
 		}
+		
 		this.maxStamp = 0;
 		// 第一张永远为1，所以从第二张开始计算
 		this.backtrack(1);
@@ -45,7 +47,6 @@ public class StampCost {
 
 	/**
 	 * 从第(i+1)张邮票到第n张邮票的面值
-	 * 
 	 * @param i
 	 */
 	public void backtrack(int i) {
@@ -70,19 +71,20 @@ public class StampCost {
 		}
 		int backupR = this.ranges;
 
-		int next;// 表示下一个邮票面值的可能值
-		int postage;
-		int num;
-
+		// next 表示下一个邮票面值的可能值
 		// 在当前已确定的基础上，下一张邮票面值的取值范围为当前最大面值+1到当前可组合的连续邮资最大值+1
-		for (next = values[i - 1] + 1; next <= ranges + 1; next++) {
+		for (int next = values[i - 1] + 1; next <= this.ranges + 1; next++) {
 			// 更新第i张的值
 			this.values[i] = next;
 
 			// 搜索当前已确定的邮票能表示出的最大邮资范围（最小值为0，最大值为邮票最大值乘以最大张数）
-			for (postage = 0; postage < values[i - 1] * m; postage++) {
+			for (int postage = 0; postage < values[i - 1] * m; postage++) {
+				
+				if (this.leastStamp[postage] >= m) 
+					continue;
+				
 				// 计算表示postage还可以使用的邮票数目
-				for (num = 1; num <= this.m - this.leastStamp[postage]; num++) {
+				for (int num = 1; num <= this.m - this.leastStamp[postage]; num++) {
 
 					// 如果组合出postage的最少有票数加上num张，小于组合出postage+num*next的邮票数，说明组合出postage+num*next并不需要使用num张下一张邮票
 					// 那么组合出postage+num*next的邮票数，就等于组合出postage的邮票数加上num
@@ -95,7 +97,7 @@ public class StampCost {
 				}
 			}
 
-			while (this.leastStamp[this.ranges + 1] != INF) {
+			while (this.leastStamp[this.ranges + 1] < INF) {
 				this.ranges++;
 			}
 
