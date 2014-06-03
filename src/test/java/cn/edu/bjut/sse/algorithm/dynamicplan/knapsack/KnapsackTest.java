@@ -14,9 +14,9 @@ public class KnapsackTest {
 		
 		
 		Knapsack[] bags = new Knapsack[] { new Knapsack(2, 6),
-				new Knapsack(2, 3), new Knapsack(6, 5), new Knapsack(5, 4),
+				new Knapsack(1, 3), new Knapsack(6, 5), new Knapsack(5, 4),
 				new Knapsack(4, 6) };
-		int totalWeight = 10;
+		int totalWeight = 11;
 		
 		
 		// [When]

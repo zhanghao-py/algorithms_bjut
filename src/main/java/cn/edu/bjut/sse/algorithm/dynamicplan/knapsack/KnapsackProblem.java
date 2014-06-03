@@ -77,10 +77,12 @@ public class KnapsackProblem {
 		}
 		
 		int tempWeight = totalWeight;
-		for (int i = n; i >= 1; i--) {
+		for (int i = n; i >= 1; ) {
 			if (bestValues[i][tempWeight] > bestValues[i - 1][tempWeight]) {
 				bestSolution.add(bags[i-1]); // bags[i-1] 表示第i个物品
 				tempWeight -= bags[i-1].getWeight();
+			} else {
+				i--;
 			}
 			
 			if (tempWeight == 0) {
@@ -133,31 +135,17 @@ public class KnapsackProblem {
 			if (bestValues[i][tempWeight] > bestValues[i - 1][tempWeight]) {
 				bestSolution.add(bags[i-1]); // bags[i-1] 表示第i个物品
 				tempWeight -= bags[i-1].getWeight();
+			} else {
+				i--;
 			}
 			
-			//TODO: 打印方案还需修改（完全背包无法满足）
-			if (tempWeight == 0 || tempWeight < min(bags) ) {
+			if (tempWeight == 0) {
 				break;
 			}
 		}
 		
 		bestValue = bestValues[n][totalWeight];
 	}
-	
-	
-	private int min(Knapsack[] bags) {
-		int min = 0;
-		
-		for (Knapsack b : bags) {
-			if ( min < b.getWeight() ) {
-				min = b.getWeight();
-			}
-		}
-		
-		
-		return min;
-	}
-	
 	
 	/**
 	 * 求解前 n个物品、给定总承重为 totalWeight下的0/1背包问题
