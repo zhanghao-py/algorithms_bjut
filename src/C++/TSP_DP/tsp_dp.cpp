@@ -51,7 +51,7 @@ int main() {
             //如果城市i不在j集合中，计算从初始点开始经过集合j到i的最短距离
             if(( j & (1 <<(i - 1) ) ) == 0){
 
-                //c[i][j]min(dCity[k][i] + c[k][ (j - ( 1 << (k - 1) )) ])
+                //c[i][j] = min(dCity[k][i] + c[k][ (j - ( 1 << (k - 1) )) ])
                 int m  = INF;
                 for(int k = 1; k < nCity ; ++k){
 
@@ -73,15 +73,6 @@ int main() {
     for(int i = 1; i < nCity; ++i){
         c[0][s-1] = min(c[0][s-1],dCity[0][i] + c[i][(s-1)-(1<<(i-1))]);
     }
-
-/*
-    //打印c[][]
-    for(int i = 0; i < nCity; i++){
-        for(int j = 0; j < 1 << nCity-1; j ++){
-            cout<<c[i][j]<<", ";
-        }
-        cout<<endl;
-    }*/
 
     cout<<"Minimum travle distance:"<<c[0][s-1]<<endl<<"Routine:";
 
